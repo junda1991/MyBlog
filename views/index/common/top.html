@@ -1,0 +1,12 @@
+<div class="ladytop">
+    <div class="nav">
+        <div class="left"><a href=""><img src="../../static/index/images/logo.png" height="60px" width="230px"></a></div>
+        <div class="right">
+            <div class="box">
+                {{range .cates}}
+                    <a href="/index/article?cateid={{.Id}}"  rel='dropmenu209'>{{.Catename}}</a>
+                {{end}}
+            </div>
+        </div>
+    </div>
+</div>
