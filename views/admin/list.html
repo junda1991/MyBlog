@@ -78,8 +78,33 @@
                                 </td>
                             </tr>
                         {{end}}
+
                                                     </tbody>
                     </table>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+
+                            <li><a href="/admin/list?pageIndex=1"> <span aria-hidden="true">&laquo;</span>首页</a></li>
+                            {{if compare .FirstPage true}}
+
+                            {{else}}
+                            <li><a href="/admin/list?pageIndex={{.pageIndex1 | ShowPrePage}}">上一页</a></li>
+                            {{end}}
+                            {{if compare .EndPage true}}
+
+                            {{else}}
+                            <li><a href="/admin/list?pageIndex={{.pageIndex1 | ShowNextPage}}">下一页</a></li>
+                            {{end}}
+                            <li><a href="/admin/list?pageIndex={{.pageCount1}}">末页 <span aria-hidden="true">&raquo;</span></a></li>
+
+                            <li>
+                                <label  style="padding-top:7px ;padding-left:50px;text-align: center">共{{.count}}条记录/共{{.pageCount1}}页/当前{{.pageIndex1}}页</label>
+                            </li>
+
+
+                        </ul>
+                    </nav>
+
                 </div>
                 <div>
                 	                </div>

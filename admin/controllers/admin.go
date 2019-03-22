@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"math"
+	"strconv"
 )
 
 type MainController struct {
@@ -29,11 +31,47 @@ func (c *MainController) Get() {
 func (c *MainController) ShowAdminlist() {
 	o:=orm.NewOrm()
 	var admins []models.Admin
-	_,err:=o.QueryTable("Admin").All(&admins)
+	//_,err:=o.QueryTable("Admin").All(&admins)
+	qs:=o.QueryTable("Admin");
+
+
+	pageIndex:=c.GetString("pageIndex")
+	pageIndex1,err:=strconv.Atoi(pageIndex)
+	if err!=nil{
+		pageIndex1=1
+	}
+	//qs.All(&admins);
+	count,err:=qs.Count()
+
+	pageSize:=3
+	//pageIndex:=1
+	start:=pageSize*(pageIndex1-1)
+	qs.Limit(pageSize,start).All(&admins)
+
+	pageCount:=float64(count)/float64(pageSize)
+	pageCount1:=math.Ceil(pageCount)
+
+
 	if err !=nil{
 		beego.Info("查询所有文章出错")
 	}
+	FirstPage:=false
+	EndPage:=false
+	if pageIndex1==1{
+		FirstPage=true
+	}
+	if pageIndex1==int(pageCount1){
+		EndPage=true
+	}
+	beego.Info(pageCount1,"=====")
+	beego.Info(count,"!!!!!!!!!")
 	beego.Info(admins)
+
+	c.Data["EndPage"]=EndPage
+	c.Data["FirstPage"]=FirstPage
+	c.Data["pageCount1"]=pageCount1
+	c.Data["count"]=count
+	c.Data["pageIndex1"]=pageIndex1
 	c.Data["sss"]=admins
 	c.TplName="admin/list.html"
 }
